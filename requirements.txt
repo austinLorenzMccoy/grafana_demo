@@ -1,0 +1,6 @@
+psycopg2-binary
+faker
+pandas
+ipykernel
+pyarrow
+dask

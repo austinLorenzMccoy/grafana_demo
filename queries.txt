@@ -1,0 +1,81 @@
+
+
+1. Total Approved Amount
+```sql
+SELECT 
+    ROUND(COALESCE(SUM(amount), 0), 2) AS total_approved_amount 
+FROM 
+    banking_data 
+WHERE 
+    decision = 'Approved';
+```
+
+2. Rejected Transaction Amount
+```sql
+SELECT 
+    ROUND(COALESCE(SUM(amount), 0), 2) AS total_rejected_amount 
+FROM 
+    banking_data 
+WHERE 
+    decision = 'Rejected';
+```
+
+3. Transaction Types
+```sql
+SELECT 
+    trans_type, 
+    COUNT(*) AS transaction_count,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage
+FROM 
+    banking_data 
+GROUP BY 
+    trans_type 
+ORDER BY 
+    transaction_count DESC
+LIMIT 50;
+```
+
+4. Rules Triggered (Modified to work with your current data structure)
+```sql
+SELECT 
+    COALESCE(rules_triggered, 'No Rules') AS triggered_rule, 
+    COUNT(*) AS rule_count,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage
+FROM 
+    banking_data 
+GROUP BY 
+    rules_triggered 
+ORDER BY 
+    rule_count DESC;
+```
+
+5. Blacklisted Account Transactions
+```sql
+SELECT 
+    account_id, 
+    COUNT(*) AS blacklisted_transactions,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage
+FROM 
+    banking_data 
+WHERE 
+    account_blacklisted = TRUE 
+GROUP BY 
+    account_id 
+ORDER BY 
+    blacklisted_transactions DESC
+LIMIT 50;
+```
+
+Key:
+- Added percentage calculations
+- Used COALESCE to handle potential NULL values
+- Added ORDER BY to show most significant results first
+- Rounded numeric values for readability
+- Removed unnecessary LIMIT on some queries
+- Added more descriptive column names
+
+Visualization Recommendations:
+1. Stat: Use total amounts with currency formatting
+2. Pie Chart: Show transaction types with percentages
+3. Bar Chart: Highlight rules triggered and blacklisted accounts
+4. Include percentage in tooltips for better context
