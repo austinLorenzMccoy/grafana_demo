@@ -98,9 +98,6 @@ python app.py
 4. Push to the branch
 5. Create a Pull Request
 
-## 📜 License
-MIT License
-
 ## 🚨 Disclaimer
 This is a demonstration project. Do not use production credentials or sensitive information.
 
